@@ -24,6 +24,7 @@ class CameraViewController: RecorderViewController {
     private var handPoseRequest = VNDetectHumanHandPoseRequest()
     private var gestureProcessor = ApprovalGestureProcessor()
     
+    
     private let drawOverlay = CAShapeLayer()
     private let drawPath = UIBezierPath()
     private var evidenceBuffer = [Fingers]()
@@ -162,14 +163,17 @@ class CameraViewController: RecorderViewController {
         switch state {
         case .possibleThumbsUp, .possibleThumbsDown:
             tipsColor = .orange
-            label.text = ""
+            label.text = gestureProcessor.handSign
         case .thumbsUp:
             tipsColor = .green
-            label.text = "👍"
+            label.text = gestureProcessor.handSign
             toggleRecording()
-        case .thumbsDown, .unknown:
+        case .thumbsDown:
             tipsColor = .red
-            label.text = "👎"
+            label.text = gestureProcessor.handSign
+        case .unknown:
+            tipsColor = .red
+            label.text = "unknown"
         }
         cameraView.showPoints([pointsFingers.thumb.TIP, pointsFingers.thumb.IP, pointsFingers.thumb.MP, pointsFingers.thumb.CMC,
                                pointsFingers.index.TIP, pointsFingers.index.DIP, pointsFingers.index.PIP, pointsFingers.index.MCP,
@@ -350,6 +354,8 @@ class CameraViewController: RecorderViewController {
             }
         }
     }
+    
+    
 }
 
 extension CameraViewController {

@@ -26,7 +26,7 @@ class ApprovalGestureProcessor {
     private var apartEvidenceCounter = 0
     private let pinchMaxDistance: CGFloat
     private let evidenceCounterStateTrigger: Int
-    
+    public var handSign = ""
     var didChangeStateClosure: ((State) -> Void)?
     private (set) var lastProcessedPointsFingers = defaultHand
     
@@ -42,7 +42,7 @@ class ApprovalGestureProcessor {
     }
     
     func processFingerPoints(_ pointsFingers: Fingers) {
-        pointsFingers.findGesture()
+        handSign = pointsFingers.findGesture()
         
         lastProcessedPointsFingers = pointsFingers
 //        let distance = pointsFingers.index.TIP.isLocatedLower(then: pointsFingers.thumb.TIP)

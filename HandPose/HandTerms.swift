@@ -78,7 +78,7 @@ struct Fingers {
         return TIPExtends && DIPExtends && PIPExtends
     }
     
-    func findGesture() {
+    func findGesture() -> String {
         var sign = ""
         let extendedThumb = self.extends(finger: .thumb)
         let extendedIndex = self.extends(finger: .index)
@@ -94,6 +94,7 @@ struct Fingers {
             sign = "👍"
         }
         print(sign)
+        return sign
     }
 }
 
