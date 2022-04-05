@@ -61,12 +61,12 @@ class CameraViewController: RecorderViewController {
             }
         }
         
-        view.addSubview(recordButton)
-        recordButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
-        recordButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        recordButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 3).isActive = true
-        recordButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        recordButton.addTarget(self, action: #selector(recordButtonAction), for: .touchUpInside)
+//        view.addSubview(recordButton)
+//        recordButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -20).isActive = true
+//        recordButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+//        recordButton.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 1 / 3).isActive = true
+//        recordButton.heightAnchor.constraint(equalToConstant: 40).isActive = true
+//        recordButton.addTarget(self, action: #selector(recordButtonAction), for: .touchUpInside)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,17 +75,17 @@ class CameraViewController: RecorderViewController {
         cameraView.previewLayer.session = recorder.captureSession
     }
     
-    func toggleRecording() {
-        guard !startedRecording else { return }
-        startedRecording = true
-        recordButtonAction()
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { [self] in
-            self.startedRecording = false
-            self.recordButtonAction()
-        }
-    }
-    
+//    func toggleRecording() {
+//        guard !startedRecording else { return }
+//        startedRecording = true
+//        recordButtonAction()
+//
+//        DispatchQueue.main.asyncAfter(deadline: .now() + 10.0) { [self] in
+//            self.startedRecording = false
+//            self.recordButtonAction()
+//        }
+//    }
+//
     func processPoints(fingers: PossibleFingers) {
         // Check that we have both points.
         guard let thumbTip = fingers.thumb.TIP,
@@ -167,7 +167,7 @@ class CameraViewController: RecorderViewController {
         case .thumbsUp:
             tipsColor = .green
             label.text = gestureProcessor.handSign
-            toggleRecording()
+//            toggleRecording()
         case .thumbsDown:
             tipsColor = .red
             label.text = gestureProcessor.handSign

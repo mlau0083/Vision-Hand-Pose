@@ -66,7 +66,7 @@ struct Fingers {
             chosenFinger = little
         case .thumb:
             let thumbTIPAngle = abs(CGPoint.angleBetween(p1: thumb.TIP, p2: thumb.MP, p3: index.MCP))
-            let TIPExtends = thumb.TIP.distance(from: wrist) > thumb.IP.distance(from: wrist) && thumbTIPAngle > 40.0
+            let TIPExtends = thumb.TIP.distance(from: wrist) > thumb.IP.distance(from: wrist) && thumbTIPAngle > 45.0
             let DIPExtends = thumb.IP.distance(from: wrist) > thumb.MP.distance(from: wrist)
             let PIPExtends = thumb.MP.distance(from: wrist) > thumb.CMC.distance(from: wrist)
             return TIPExtends && DIPExtends && PIPExtends
@@ -87,13 +87,43 @@ struct Fingers {
         let extendedLittle = self.extends(finger: .little)
         
         if (extendedThumb && extendedIndex && !extendedMiddle && !extendedRing && extendedLittle) {
-            sign = "🎸"
+            sign = "🤟🏻"
         }
         
         if (extendedThumb && !extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle) {
             sign = "👍"
         }
         
+        if (!extendedThumb && extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle && index.TIP.y < wrist.y && abs(index.TIP.y-wrist.y) > abs(index.TIP.x - wrist.x)) {
+            sign = "☝🏻"
+        }
+        
+        if (!extendedThumb && extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle && index.TIP.y > wrist.y && abs(index.TIP.y-wrist.y) > abs(index.TIP.x - wrist.x)) {
+            sign = "👇🏻"
+        }
+        if (!extendedThumb && extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle && index.TIP.x < wrist.x && abs(index.TIP.y-wrist.y) < abs(index.TIP.x - wrist.x)) {
+            sign = "👈🏻"
+        }
+        
+        if (!extendedThumb && extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle && index.TIP.x > wrist.x && abs(index.TIP.y-wrist.y) < abs(index.TIP.x - wrist.x)) {
+            sign = "👉🏻"
+        }
+        
+        if (!extendedThumb && extendedIndex && extendedMiddle && !extendedRing && !extendedLittle) {
+            sign = "✌🏻"
+        }
+        
+        if (extendedThumb && extendedIndex && extendedMiddle && extendedRing && extendedLittle) {
+            sign = "🖐🏻"
+        }
+        
+        if (!extendedThumb && !extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle) {
+            sign = "✊🏻"
+        }
+        
+        if (!extendedThumb && !extendedIndex && extendedMiddle && extendedRing && extendedLittle) {
+            sign = "👌🏻"
+        }
         print(sign, extendedThumb, extendedIndex,extendedMiddle,extendedRing,extendedLittle)
         return sign
     }
