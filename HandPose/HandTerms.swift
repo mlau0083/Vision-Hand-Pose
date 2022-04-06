@@ -66,10 +66,12 @@ struct Fingers {
             chosenFinger = little
         case .thumb:
             let thumbTIPAngle = abs(CGPoint.angleBetween(p1: thumb.TIP, p2: thumb.MP, p3: index.MCP))
-            let TIPExtends = thumb.TIP.distance(from: wrist) > thumb.IP.distance(from: wrist) && thumbTIPAngle > 45.0
-            let DIPExtends = thumb.IP.distance(from: wrist) > thumb.MP.distance(from: wrist)
-            let PIPExtends = thumb.MP.distance(from: wrist) > thumb.CMC.distance(from: wrist)
-            return TIPExtends && DIPExtends && PIPExtends
+            let TIPExtends = thumb.TIP.distance(from: index.MCP) > thumb.IP.distance(from: index.MCP) && thumbTIPAngle > 30.0
+//            let TIPExtends = thumb.TIP.distance(from: wrist) > thumb.IP.distance(from: wrist) && thumbTIPAngle > 20.0
+//            let DIPExtends = thumb.IP.distance(from: wrist) > thumb.MP.distance(from: wrist)
+//            let PIPExtends = thumb.MP.distance(from: wrist) > thumb.CMC.distance(from: wrist)
+            let thumbOutPalm = abs(thumb.TIP.distance(from: little.MCP)) > abs(index.TIP.distance(from: little.MCP))
+            return TIPExtends && thumbOutPalm //&& DIPExtends && PIPExtends
         }
         
         let TIPExtends = chosenFinger.TIP.distance(from: wrist) > chosenFinger.DIP.distance(from: wrist)
@@ -90,8 +92,20 @@ struct Fingers {
             sign = "🤟🏻"
         }
         
-        if (extendedThumb && !extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle) {
+        if (extendedThumb && !extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle && thumb.TIP.y < little.MCP.y && abs(thumb.TIP.y-little.MCP.y) > abs(thumb.TIP.x - little.MCP.x)) {
             sign = "👍"
+        }
+        
+        if (extendedThumb && !extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle && thumb.TIP.y > little.MCP.y && abs(thumb.TIP.y-little.MCP.y) > abs(thumb.TIP.x - little.MCP.x)) {
+            sign = "👎🏾"
+        }
+        
+        if (extendedThumb && !extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle && thumb.TIP.x < little.MCP.x && abs(thumb.TIP.y-little.MCP.y) < abs(thumb.TIP.x - little.MCP.x)) {
+            sign = "⬅️"
+        }
+        
+        if (extendedThumb && !extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle && thumb.TIP.x > little.MCP.x && abs(thumb.TIP.y-little.MCP.y) < abs(thumb.TIP.x - little.MCP.x)) {
+            sign = "➡️"
         }
         
         if (!extendedThumb && extendedIndex && !extendedMiddle && !extendedRing && !extendedLittle && index.TIP.y < wrist.y && abs(index.TIP.y-wrist.y) > abs(index.TIP.x - wrist.x)) {

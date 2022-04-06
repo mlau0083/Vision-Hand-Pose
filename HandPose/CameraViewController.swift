@@ -45,15 +45,15 @@ class CameraViewController: RecorderViewController {
         label.font = UIFont.boldSystemFont(ofSize: 50.0)
         view.addSubview(label)
         
-        recorder.videoListeners.append { (url) in
-            let result = self.getNumberOfFrames(url: url) // Or send this to an SDK and do something with the result
-            
-            let alert = UIAlertController(title: "Frames", message: "The video counted \(result) frames", preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: nil))
-            self.present(alert, animated: true)
-            
-            FileManager.default.clearTmpDirectory() // You shouldn't to keep the video in /tmp for security reasons
-        }
+//        recorder.videoListeners.append { (url) in
+//            let result = self.getNumberOfFrames(url: url) // Or send this to an SDK and do something with the result
+//
+//            let alert = UIAlertController(title: "Frames", message: "The video counted \(result) frames", preferredStyle: .alert)
+//            alert.addAction(UIAlertAction(title: "Yes", style: .default, handler: nil))
+//            self.present(alert, animated: true)
+//
+//            FileManager.default.clearTmpDirectory() // You shouldn't to keep the video in /tmp for security reasons
+//        }
         
         recorder.sampleBufferListeners.append { (output, sampleBuffer, connection) in
             if output is AVCaptureVideoDataOutput {
@@ -173,7 +173,7 @@ class CameraViewController: RecorderViewController {
             label.text = gestureProcessor.handSign
         case .unknown:
             tipsColor = .red
-            label.text = "unknown"
+            label.text = "❓"
         }
         cameraView.showPoints([pointsFingers.thumb.TIP, pointsFingers.thumb.IP, pointsFingers.thumb.MP, pointsFingers.thumb.CMC,
                                pointsFingers.index.TIP, pointsFingers.index.DIP, pointsFingers.index.PIP, pointsFingers.index.MCP,
@@ -347,6 +347,7 @@ class CameraViewController: RecorderViewController {
             littleMcp = CGPoint(x: littleMcpPoint.location.x, y: 1 - littleMcpPoint.location.y)
             
             wrist = CGPoint(x: wristPoint.location.x, y: 1 - wristPoint.location.y)
+            
         } catch {
             let error = AppError.visionError(error: error)
             DispatchQueue.main.async {
@@ -358,45 +359,45 @@ class CameraViewController: RecorderViewController {
     
 }
 
-extension CameraViewController {
-    @objc
-    func recordButtonAction() {
-        print(#function)
-        if recorder.isRecording {
-            recorder.stopRecording()
-        } else {
-            recorder.startRecording()
-        }
-        recordButton.setTitle(recorder.isRecording ? "Recording" : "Start", for: .normal)
-    }
-    
-    func getNumberOfFrames(url: URL) -> Int {
-        let asset = AVURLAsset(url: url, options: nil)
-        do {
-            let reader = try AVAssetReader(asset: asset)
-            //AVAssetReader(asset: asset, error: nil)
-            let videoTrack = asset.tracks(withMediaType: AVMediaType.video)[0]
-            
-            let readerOutput = AVAssetReaderTrackOutput(track: videoTrack, outputSettings: nil) // NB: nil, should give you raw frames
-            reader.add(readerOutput)
-            reader.startReading()
-            
-            var nFrames = 0
-            
-            while true {
-                let sampleBuffer = readerOutput.copyNextSampleBuffer()
-                if sampleBuffer == nil {
-                    break
-                }
-                
-                nFrames = nFrames+1
-            }
-            
-            print("Num frames: \(nFrames)")
-            return nFrames
-        }catch {
-            print("Error: \(error)")
-        }
-        return 0
-    }
-}
+//extension CameraViewController {
+//    @objc
+//    func recordButtonAction() {
+//        print(#function)
+//        if recorder.isRecording {
+//            recorder.stopRecording()
+//        } else {
+//            recorder.startRecording()
+//        }
+//        recordButton.setTitle(recorder.isRecording ? "Recording" : "Start", for: .normal)
+//    }
+//
+//    func getNumberOfFrames(url: URL) -> Int {
+//        let asset = AVURLAsset(url: url, options: nil)
+//        do {
+//            let reader = try AVAssetReader(asset: asset)
+//            //AVAssetReader(asset: asset, error: nil)
+//            let videoTrack = asset.tracks(withMediaType: AVMediaType.video)[0]
+//
+//            let readerOutput = AVAssetReaderTrackOutput(track: videoTrack, outputSettings: nil) // NB: nil, should give you raw frames
+//            reader.add(readerOutput)
+//            reader.startReading()
+//
+//            var nFrames = 0
+//
+//            while true {
+//                let sampleBuffer = readerOutput.copyNextSampleBuffer()
+//                if sampleBuffer == nil {
+//                    break
+//                }
+//
+//                nFrames = nFrames+1
+//            }
+//
+//            print("Num frames: \(nFrames)")
+//            return nFrames
+//        }catch {
+//            print("Error: \(error)")
+//        }
+//        return 0
+//    }
+//}
